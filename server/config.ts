@@ -57,9 +57,13 @@ export const config = {
   },
 
   iceServers: [
-    { urls: "stun.l.google.com:19302" },
     {
-      urls: "stun1.l.google.com:19302,",
+      urls: `stun:${process.env.ICE_SERVER_DOMAIN || "localhost"}`,
+    },
+    {
+      urls: `turn:${process.env.ICE_SERVER_DOMAIN || "localhost"}`,
+      credential: process.env.ICE_SERVER_PASSWORD || "expresso_password",
+      username: process.env.ICE_SERVER_USERNAME || "expresso_user",
     },
   ],
 };

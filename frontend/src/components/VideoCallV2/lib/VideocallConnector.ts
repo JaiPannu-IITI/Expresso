@@ -336,9 +336,12 @@ export class VideoCallConnector {
 
     console.log("PRODUCER: ", data);
 
-    // if (this.producerTransports.has(data.data.producerType)) {
-    //   return;
-    // }
+    const iceServerDomain =
+      process.env.NEXT_PUBLIC_ICE_SERVER_DOMAIN || "localhost";
+    const iceServerUsername =
+      process.env.NEXT_PUBLIC_ICE_SERVER_USERNAME || "expresso_user";
+    const iceServerPassword =
+      process.env.NEXT_PUBLIC_ICE_SERVER_PASSWORD || "expresso_password";
 
     console.log({
       id: data.data.id,
@@ -347,9 +350,17 @@ export class VideoCallConnector {
       dtlsParameters: data.data.dtlsParameters,
       iceServers: [
         {
-          urls: "turn:192.158.29.39:3478?transport=udp",
-          credential: "JZEOEt2V3Qb0y27GRntt2u2PAYA=",
-          username: "28224511:1379330808",
+          urls: `stun:${iceServerDomain}`,
+        },
+        {
+          urls: `turn:${iceServerDomain}?transport=udp`,
+          credential: iceServerPassword,
+          username: iceServerUsername,
+        },
+        {
+          urls: `turn:${iceServerDomain}?transport=tcp`,
+          credential: iceServerPassword,
+          username: iceServerUsername,
         },
       ],
     });
@@ -363,9 +374,17 @@ export class VideoCallConnector {
         dtlsParameters: data.data.dtlsParameters,
         iceServers: [
           {
-            urls: "turn:192.158.29.39:3478?transport=udp",
-            credential: "JZEOEt2V3Qb0y27GRntt2u2PAYA=",
-            username: "28224511:1379330808",
+            urls: `stun:${iceServerDomain}`,
+          },
+          {
+            urls: `turn:${iceServerDomain}?transport=udp`,
+            credential: iceServerPassword,
+            username: iceServerUsername,
+          },
+          {
+            urls: `turn:${iceServerDomain}?transport=tcp`,
+            credential: iceServerPassword,
+            username: iceServerUsername,
           },
         ],
       })
@@ -374,9 +393,17 @@ export class VideoCallConnector {
     this.producerTransports.get(data.data.producerType).updateIceServers({
       iceServers: [
         {
-          urls: "turn:192.158.29.39:3478?transport=udp",
-          credential: "JZEOEt2V3Qb0y27GRntt2u2PAYA=",
-          username: "28224511:1379330808",
+          urls: `stun:${iceServerDomain}`,
+        },
+        {
+          urls: `turn:${iceServerDomain}?transport=udp`,
+          credential: iceServerPassword,
+          username: iceServerUsername,
+        },
+        {
+          urls: `turn:${iceServerDomain}?transport=tcp`,
+          credential: iceServerPassword,
+          username: iceServerUsername,
         },
       ],
     });
@@ -460,9 +487,26 @@ export class VideoCallConnector {
 
     const processedData = event.data;
 
+    const iceServerDomain =
+      process.env.NEXT_PUBLIC_ICE_SERVER_DOMAIN || "localhost";
+    const iceServerUsername =
+      process.env.NEXT_PUBLIC_ICE_SERVER_USERNAME || "expresso_user";
+    const iceServerPassword =
+      process.env.NEXT_PUBLIC_ICE_SERVER_PASSWORD || "expresso_password";
+
     processedData["iceServers"] = [
       {
-        urls: ["stun:stun.l.google.com:19302"],
+        urls: `stun:${iceServerDomain}`,
+      },
+      {
+        urls: `turn:${iceServerDomain}?transport=udp`,
+        credential: iceServerPassword,
+        username: iceServerUsername,
+      },
+      {
+        urls: `turn:${iceServerDomain}?transport=tcp`,
+        credential: iceServerPassword,
+        username: iceServerUsername,
       },
     ];
 

@@ -1,0 +1,26 @@
+services:
+  coturn:
+    image: coturn/coturn:4.6.2-alpine
+    container_name: expresso_ice_coturn
+    restart: unless-stopped
+    ports:
+      - "3478:3478/udp" # STUN + TURN (UDP)
+      - "3478:3478/tcp" # TURN fallback over TCP
+    environment:
+      - TURN_REALM=${ICE_SERVER_REALM}
+      - TURN_EXTERNAL_IP=${ICE_SERVER_EXTERNAL_IP}
+      - TURN_USER=${ICE_SERVER_USERNAME}:${ICE_SERVER_PASSWORD}
+    command: >
+      --no-tls
+      --no-dtls
+      --realm=${ICE_SERVER_REALM}
+      --external-ip=${ICE_SERVER_EXTERNAL_IP}
+      --user=${ICE_SERVER_USERNAME}:${ICE_SERVER_PASSWORD}
+      --listening-port=3478
+      --log-file=/var/log/coturn.log
+    networks:
+      - expresso_ice_network
+
+networks:
+  expresso_ice_network:
+    driver: bridge

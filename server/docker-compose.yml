@@ -9,6 +9,12 @@ services:
     env_file:
       - ./.env
     restart: unless-stopped
+    privileged: true # Required for io_uring
+    cap_add:
+      - SYS_ADMIN
+      - NET_ADMIN
+    security_opt:
+      - seccomp:unconfined
     networks:
       - expresso_sfu_network
 

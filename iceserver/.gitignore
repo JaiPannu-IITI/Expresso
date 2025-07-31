@@ -1,0 +1,36 @@
+# Expresso ICE Server .gitignore
+
+# Environment files
+.env
+.env.local
+.env.production
+
+# Backup files
+*.bak
+*.backup
+
+# Logs
+*.log
+logs/
+
+# Docker volumes
+data/
+
+# SSL certificates (if using TLS)
+*.pem
+*.key
+*.crt
+*.p12
+
+# Temporary files
+*.tmp
+*.temp
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db 
