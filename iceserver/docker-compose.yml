@@ -4,20 +4,35 @@ services:
     container_name: expresso_ice_coturn
     restart: unless-stopped
     ports:
-      - "3478:3478/udp" # STUN + TURN (UDP)
-      - "3478:3478/tcp" # TURN fallback over TCP
+      - "3478:3478/udp"
+      - "3478:3478/tcp"
+      - "10000-10100:10000-10100/udp"
+
     environment:
-      - TURN_REALM=${ICE_SERVER_REALM}
-      - TURN_EXTERNAL_IP=${ICE_SERVER_EXTERNAL_IP}
-      - TURN_USER=${ICE_SERVER_USERNAME}:${ICE_SERVER_PASSWORD}
+      TURN_SECRET: "${TURN_SECRET}"      
+      TURN_USER:   "${TURN_USER}"        
+      TURN_PWD:    "${TURN_PASSWORD}"    
+      TURN_REALM:  "${TURN_REALM}"       
+      TURN_EXTERNAL_IP: "${TURN_EXTERNAL_IP}"  
+
     command: >
-      --no-tls
-      --no-dtls
-      --realm=${ICE_SERVER_REALM}
-      --external-ip=${ICE_SERVER_EXTERNAL_IP}
-      --user=${ICE_SERVER_USERNAME}:${ICE_SERVER_PASSWORD}
+      --no-cli                       
+      --realm=${TURN_REALM}
       --listening-port=3478
-      --log-file=/var/log/coturn.log
+      --tls-listening-port=5349
+      --external-ip=${TURN_EXTERNAL_IP}
+      --listening-ip=0.0.0.0
+
+      --min-port=10000
+      --max-port=10100
+
+      --lt-cred-mech              
+      --user=${TURN_USER}:${TURN_PASSWORD}
+
+      --no-tls                      
+      --no-dtls
+
+      --verbose
     networks:
       - expresso_ice_network
 
