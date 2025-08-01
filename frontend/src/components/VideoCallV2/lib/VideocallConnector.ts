@@ -374,15 +374,7 @@ export class VideoCallConnector {
         dtlsParameters: data.data.dtlsParameters,
         iceServers: [
           {
-            urls: `stun:${iceServerDomain}`,
-          },
-          {
             urls: `turn:${iceServerDomain}?transport=udp`,
-            credential: iceServerPassword,
-            username: iceServerUsername,
-          },
-          {
-            urls: `turn:${iceServerDomain}?transport=tcp`,
             credential: iceServerPassword,
             username: iceServerUsername,
           },
@@ -393,15 +385,7 @@ export class VideoCallConnector {
     this.producerTransports.get(data.data.producerType).updateIceServers({
       iceServers: [
         {
-          urls: `stun:${iceServerDomain}`,
-        },
-        {
           urls: `turn:${iceServerDomain}?transport=udp`,
-          credential: iceServerPassword,
-          username: iceServerUsername,
-        },
-        {
-          urls: `turn:${iceServerDomain}?transport=tcp`,
           credential: iceServerPassword,
           username: iceServerUsername,
         },
@@ -497,16 +481,6 @@ export class VideoCallConnector {
     processedData["iceServers"] = [
       {
         urls: `stun:${iceServerDomain}`,
-      },
-      {
-        urls: `turn:${iceServerDomain}?transport=udp`,
-        credential: iceServerPassword,
-        username: iceServerUsername,
-      },
-      {
-        urls: `turn:${iceServerDomain}?transport=tcp`,
-        credential: iceServerPassword,
-        username: iceServerUsername,
       },
     ];
 
