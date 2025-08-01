@@ -6,32 +6,26 @@ services:
     ports:
       - "3478:3478/udp"
       - "3478:3478/tcp"
-      - "10000-10100:10000-10100/udp"
+      - "30000-30100:30000-30100/udp"
 
-    environment:
-      TURN_SECRET: "${TURN_SECRET}"      
+    environment:   
       TURN_USER:   "${TURN_USER}"        
       TURN_PWD:    "${TURN_PASSWORD}"    
       TURN_REALM:  "${TURN_REALM}"       
       TURN_EXTERNAL_IP: "${TURN_EXTERNAL_IP}"  
 
     command: >
-      --no-cli                       
+      --no-cli
       --realm=${TURN_REALM}
       --listening-port=3478
-      --tls-listening-port=5349
       --external-ip=${TURN_EXTERNAL_IP}
       --listening-ip=0.0.0.0
-
-      --min-port=10000
-      --max-port=10100
-
-      --lt-cred-mech              
+      --min-port=30000
+      --max-port=30100
+      --lt-cred-mech
       --user=${TURN_USER}:${TURN_PASSWORD}
-
-      --no-tls                      
+      --no-tls
       --no-dtls
-
       --verbose
     networks:
       - expresso_ice_network
