@@ -64,7 +64,7 @@ netstat -tuln | grep 4004
 Update your frontend ICE server configuration in the video call components:
 
 ```typescript
-// In VideoCallV2/lib/VideocallConnector.ts and VideoCallV3/lib/VideocallConnector.ts
+// In VideoCall/lib/VideocallConnector.ts and VideoCallV3/lib/VideocallConnector.ts
 iceServers: [
   {
     urls: `stun:${process.env.NEXT_PUBLIC_ICE_SERVER_DOMAIN}`, // STUN server
