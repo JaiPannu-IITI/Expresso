@@ -4,11 +4,11 @@ services:
     container_name: expresso_ice_coturn
     restart: unless-stopped
     network_mode: host
-    environment:   
-      TURN_USER:   "${TURN_USER}"        
-      TURN_PASSWORD:    "${TURN_PASSWORD}"    
-      TURN_REALM:  "${TURN_REALM}"       
-      TURN_EXTERNAL_IP: "${TURN_EXTERNAL_IP}"  
+    environment:
+      TURN_USER: "${TURN_USER}"
+      TURN_PASSWORD: "${TURN_PASSWORD}"
+      TURN_REALM: "${TURN_REALM}"
+      TURN_EXTERNAL_IP: "${TURN_EXTERNAL_IP}"
 
     command: >
       --no-cli
@@ -18,11 +18,9 @@ services:
       --listening-ip=0.0.0.0
       --min-port=30000
       --max-port=30100
-      --lt-cred-mech
       --user=${TURN_USER}:${TURN_PASSWORD}
       --fingerprint
-      --stale-nonce=3600
+      --stale-nonce=600
       --no-tls
       --no-dtls
       --verbose
-   
