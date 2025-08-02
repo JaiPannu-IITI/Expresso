@@ -343,54 +343,46 @@ export class VideoCallConnector {
     const iceServerPassword =
       process.env.NEXT_PUBLIC_ICE_SERVER_PASSWORD || "expresso_password";
 
-    console.log({
-      id: data.data.id,
-      iceParameters: data.data.iceParameters,
-      iceCandidates: data.data.iceCandidates,
-      dtlsParameters: data.data.dtlsParameters,
-      iceServers: [
-        {
-          urls: `stun:${iceServerDomain}`,
-        },
-        {
-          urls: `turn:${iceServerDomain}?transport=udp`,
-          credential: iceServerPassword,
-          username: iceServerUsername,
-        },
-        {
-          urls: `turn:${iceServerDomain}?transport=tcp`,
-          credential: iceServerPassword,
-          username: iceServerUsername,
-        },
-      ],
-    });
+    // Validate ICE server configuration
+    if (!iceServerDomain || iceServerDomain === "localhost") {
+      console.warn(
+        "ICE server domain not configured properly. Using fallback STUN servers."
+      );
+    }
 
-    this.producerTransports.set(
-      data.data.producerType,
-      this.device.createSendTransport({
-        id: data.data.id,
-        iceParameters: data.data.iceParameters,
-        iceCandidates: data.data.iceCandidates,
-        dtlsParameters: data.data.dtlsParameters,
-        iceServers: [
-          {
-            urls: `turn:${iceServerDomain}?transport=udp`,
-            credential: iceServerPassword,
-            username: iceServerUsername,
-          },
-        ],
-      })
-    );
+    const iceServers = [
+      {
+        urls: `stun:${iceServerDomain}:3478`,
+      },
+      {
+        urls: `turn:${iceServerDomain}:3478?transport=udp`,
+        credential: iceServerPassword,
+        username: iceServerUsername,
+      },
+      {
+        urls: `turn:${iceServerDomain}:3478?transport=tcp`,
+        credential: iceServerPassword,
+        username: iceServerUsername,
+      },
+    ];
 
-    this.producerTransports.get(data.data.producerType).updateIceServers({
-      iceServers: [
-        {
-          urls: `turn:${iceServerDomain}?transport=udp`,
-          credential: iceServerPassword,
-          username: iceServerUsername,
-        },
-      ],
-    });
+    console.log("ICE Servers configuration:", iceServers);
+
+    try {
+      this.producerTransports.set(
+        data.data.producerType,
+        this.device.createSendTransport({
+          id: data.data.id,
+          iceParameters: data.data.iceParameters,
+          iceCandidates: data.data.iceCandidates,
+          dtlsParameters: data.data.dtlsParameters,
+          iceServers,
+        })
+      );
+    } catch (error) {
+      console.error("Failed to create producer transport:", error);
+      return;
+    }
 
     console.log(
       "PRODUCER2: ",
@@ -480,7 +472,17 @@ export class VideoCallConnector {
 
     processedData["iceServers"] = [
       {
-        urls: `stun:${iceServerDomain}`,
+        urls: `stun:${iceServerDomain}:3478`,
+      },
+      {
+        urls: `turn:${iceServerDomain}:3478?transport=udp`,
+        credential: iceServerPassword,
+        username: iceServerUsername,
+      },
+      {
+        urls: `turn:${iceServerDomain}:3478?transport=tcp`,
+        credential: iceServerPassword,
+        username: iceServerUsername,
       },
     ];
 
